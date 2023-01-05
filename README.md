@@ -28,7 +28,7 @@ CA сервер: **vc-srv.sf.local 10.128.0.34**
 
 Curl
 
-`esm@fhm9iitp13kt346gp8ii:~$ curl -S https://artifact-srv.sf.local
+```esm@fhm9iitp13kt346gp8ii:~$ curl -S https://artifact-srv.sf.local
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,6 +53,6 @@ Commercial support is available at
 
 <p><em>Thank you for using nginx.</em></p>
 </body>
-</html>`  
+</html>```  
 
 Вывод [wget](https://drive.google.com/file/d/1Z2g7U1hoQ45JIJ4J6Jo3Dtj71N_lAAL3/view?usp=sharing)
