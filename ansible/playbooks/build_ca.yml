@@ -1,0 +1,66 @@
+- name: installing verification center
+  hosts: vc
+  gather_facts: false
+  become: true
+  become_user: "root"
+  become_method: "sudo"
+
+  tasks:
+
+    - name: install easy rsa
+      apt:
+        name: easy-rsa
+        state: present
+        update_cache: true
+
+- name: preconfig vc
+  hosts: vc
+  gather_facts: false
+  become: false
+
+  tasks:
+
+    - name: creating directory for keys
+      file:
+        path: "~/rsa"
+        state: directory
+        mode: '0700'
+
+    - name: copy needed files
+      copy:
+        src: /usr/share/easy-rsa/
+        dest: ~/rsa/
+        remote_src: yes
+
+    - name: init
+      command:
+        cmd: ./easyrsa init-pki
+        chdir: /home/esm/rsa 
+
+    - name: configruring easy rsa
+      copy:
+        src: /mnt/d/home/esm/B12-sum/ansible/rsa_vars
+        dest: ~/rsa/vars
+        owner: esm
+        group: esm
+        mode: '0754'
+
+    - name: building CA
+      expect:
+        command: "./easyrsa build-ca nopass"
+        chdir: "/home/esm/rsa"
+        responses:
+          Common Name: "CA"
+
+    - name: fetch CA public key
+      fetch:
+        src: /home/esm/rsa/pki/ca.crt
+        dest: /mnt/d/home/esm/B12-sum/ansible/ca.crt
+
+    - name: fetch CA private key
+      fetch:
+        src: /home/esm/rsa/pki/private/ca.key
+        dest: /mnt/d/home/esm/.metadata/
+
+
+    
